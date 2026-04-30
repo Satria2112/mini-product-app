@@ -8,23 +8,23 @@ import {
   Card,
   Select,
   Tooltip,
-} from "antd";
-import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+} from 'antd';
+import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
 import {
   getProducts,
   addProduct,
   updateProduct,
   deleteProduct,
-} from "./productService";
-import ProductFormModal from "./ProductFormModal";
-import { useNavigate } from "react-router-dom";
+} from './productService';
+import ProductFormModal from './ProductFormModal';
+import { useNavigate } from 'react-router-dom';
 
 export default function ProductList() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
 
   const [pagination, setPagination] = useState({
     current: 1,
@@ -37,7 +37,7 @@ export default function ProductList() {
 
   const navigate = useNavigate();
 
-  const fetchData = async (page = 1, q = "", pageSize = 5) => {
+  const fetchData = async (page = 1, q = '', pageSize = 5) => {
     setLoading(true);
 
     const skip = (page - 1) * pageSize;
@@ -57,7 +57,7 @@ export default function ProductList() {
         total: res.data.total,
       });
     } catch {
-      message.error("Failed fetch data");
+      message.error('Failed fetch data');
     }
 
     setLoading(false);
@@ -76,30 +76,30 @@ export default function ProductList() {
     try {
       if (editData) {
         await updateProduct(editData.id, values);
-        message.success("Updated");
+        message.success('Updated');
       } else {
         await addProduct(values);
-        message.success("Added");
+        message.success('Added');
       }
 
       setModalOpen(false);
       setEditData(null);
       fetchData(pagination.current, search, pagination.pageSize);
     } catch {
-      message.error("Action failed");
+      message.error('Action failed');
     }
   };
 
   const handleDelete = (record: any) => {
     Modal.confirm({
-      title: "Delete this product?",
-      centered: true, // 🔥 bikin tengah
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "Cancel",
+      title: 'Delete this product?',
+      centered: true,
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'Cancel',
       onOk: async () => {
         await deleteProduct(record.id);
-        message.success("Deleted");
+        message.success('Deleted');
         fetchData(pagination.current, search, pagination.pageSize);
       },
     });
@@ -107,31 +107,38 @@ export default function ProductList() {
 
   const columns = [
     {
-      title: "Title",
-      dataIndex: "title",
+      title: 'Title',
+      dataIndex: 'title',
       sorter: (a: any, b: any) => a.title.localeCompare(b.title),
     },
     {
-      title: "Price",
-      dataIndex: "price",
+      title: 'Price',
+      dataIndex: 'price',
       sorter: (a: any, b: any) => a.price - b.price,
     },
     {
-      title: "Action",
+      title: 'Action',
+      key: 'action',
+      width: 110, // 🔥 bikin sempit
+      align: 'center',
       render: (_: any, record: any) => (
-        <Space>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: 10,
+          }}
+        >
           <Tooltip title="Detail">
-            <Button
-              type="text"
-              icon={<EyeOutlined />}
+            <EyeOutlined
+              style={{ cursor: 'pointer' }}
               onClick={() => navigate(`/products/${record.id}`)}
             />
           </Tooltip>
 
           <Tooltip title="Edit">
-            <Button
-              type="text"
-              icon={<EditOutlined />}
+            <EditOutlined
+              style={{ cursor: 'pointer' }}
               onClick={() => {
                 setEditData(record);
                 setModalOpen(true);
@@ -140,14 +147,12 @@ export default function ProductList() {
           </Tooltip>
 
           <Tooltip title="Delete">
-            <Button
-              type="text"
-              danger
-              icon={<DeleteOutlined />}
+            <DeleteOutlined
+              style={{ color: 'red', cursor: 'pointer' }}
               onClick={() => handleDelete(record)}
             />
           </Tooltip>
-        </Space>
+        </div>
       ),
     },
   ];
@@ -157,9 +162,9 @@ export default function ProductList() {
       <Space
         style={{
           marginBottom: 16,
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
+          display: 'flex',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
         }}
       >
         <Input.Search
@@ -174,9 +179,9 @@ export default function ProductList() {
             value={pagination.pageSize}
             onChange={(value) => fetchData(1, search, value)}
             options={[
-              { value: 5, label: "5 / page" },
-              { value: 10, label: "10 / page" },
-              { value: 20, label: "20 / page" },
+              { value: 5, label: '5 / page' },
+              { value: 10, label: '10 / page' },
+              { value: 20, label: '20 / page' },
             ]}
           />
 
@@ -197,7 +202,7 @@ export default function ProductList() {
         loading={loading}
         dataSource={data}
         columns={columns}
-        scroll={{ x: "max-content" }}
+        scroll={{ x: 'max-content' }}
         pagination={{
           current: pagination.current,
           pageSize: pagination.pageSize,
