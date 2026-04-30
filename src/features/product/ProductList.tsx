@@ -9,7 +9,12 @@ import {
   Select,
   Tooltip,
 } from 'antd';
-import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import type { ColumnsType } from 'antd/es/table';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+} from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import {
   getProducts,
@@ -105,7 +110,7 @@ export default function ProductList() {
     });
   };
 
-  const columns = [
+  const columns: ColumnsType<any> = [
     {
       title: 'Title',
       dataIndex: 'title',
@@ -207,7 +212,8 @@ export default function ProductList() {
           current: pagination.current,
           pageSize: pagination.pageSize,
           total: pagination.total,
-          onChange: (page, pageSize) => fetchData(page, search, pageSize),
+          onChange: (page, pageSize) =>
+            fetchData(page, search, pageSize),
           showSizeChanger: false,
         }}
       />
