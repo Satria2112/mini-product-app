@@ -119,7 +119,7 @@ export default function ProductList() {
     {
       title: 'Action',
       key: 'action',
-      width: 110, // 🔥 bikin sempit
+      width: 110,
       align: 'center',
       render: (_: any, record: any) => (
         <div
