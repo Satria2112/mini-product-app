@@ -4,17 +4,17 @@ import { useAuthStore } from './authStore';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-const { Title } = Typography;
+import styles from '../../style/LoginPage.module.css';
+
+const { Title, Text } = Typography;
 
 export default function LoginPage() {
-  const setAuth = useAuthStore((s) => s.setAuth);
-  const token = useAuthStore((s) => s.token);
+  const setAuth = useAuthStore((s: any) => s.setAuth);
+  const token = useAuthStore((s: any) => s.token);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token) {
-      navigate('/', { replace: true });
-    }
+    if (token) navigate('/');
   }, [token]);
 
   const onFinish = async (values: any) => {
@@ -23,37 +23,51 @@ export default function LoginPage() {
       setAuth(res.data);
 
       message.success('Login success');
-      navigate('/', { replace: true });
+      navigate('/');
     } catch {
       message.error('Login gagal');
     }
   };
 
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background: 'linear-gradient(135deg, #1677ff, #69c0ff)',
-      }}
-    >
-      <Card style={{ width: 360, borderRadius: 12 }}>
+    <div className={styles.container}>
+      {/* background animation */}
+      <div className={styles.overlay} />
+
+      {/* bubbles */}
+      <div className={`${styles.bubble} ${styles.bubble1}`} />
+      <div className={`${styles.bubble} ${styles.bubble2}`} />
+      <div className={`${styles.bubble} ${styles.bubble3}`} />
+
+      {/* card */}
+      <Card className={styles.card}>
         <Title level={3} style={{ textAlign: 'center' }}>
-          Login
+          Welcome Back 👋
         </Title>
 
-        <Form onFinish={onFinish} layout="vertical">
+        <Text
+          type="secondary"
+          style={{ display: 'block', textAlign: 'center', marginBottom: 20 }}
+        >
+          Please login to continue
+        </Text>
+
+        <Form layout="vertical" onFinish={onFinish}>
           <Form.Item name="username" rules={[{ required: true }]}>
-            <Input placeholder="Username" />
+            <Input size="large" placeholder="Username" />
           </Form.Item>
 
           <Form.Item name="password" rules={[{ required: true }]}>
-            <Input.Password placeholder="Password" />
+            <Input.Password size="large" placeholder="Password" />
           </Form.Item>
 
-          <Button type="primary" htmlType="submit" block>
+          <Button
+            type="primary"
+            htmlType="submit"
+            block
+            size="large"
+            className={styles.button}
+          >
             Login
           </Button>
         </Form>

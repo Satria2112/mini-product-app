@@ -50,7 +50,7 @@ export default function Sidebar({ collapsed, onClose }: any) {
           fontWeight: 'bold',
         }}
       >
-        {collapsed ? 'A' : 'Admin Panel'}
+        {collapsed ? 'A' : 'Product App'}
       </div>
 
       <Menu

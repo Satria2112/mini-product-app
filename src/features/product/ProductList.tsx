@@ -9,11 +9,7 @@ import {
   Select,
   Tooltip,
 } from "antd";
-import {
-  EditOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import {
   getProducts,
@@ -97,6 +93,10 @@ export default function ProductList() {
   const handleDelete = (record: any) => {
     Modal.confirm({
       title: "Delete this product?",
+      centered: true, // 🔥 bikin tengah
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "Cancel",
       onOk: async () => {
         await deleteProduct(record.id);
         message.success("Deleted");
@@ -202,8 +202,7 @@ export default function ProductList() {
           current: pagination.current,
           pageSize: pagination.pageSize,
           total: pagination.total,
-          onChange: (page, pageSize) =>
-            fetchData(page, search, pageSize),
+          onChange: (page, pageSize) => fetchData(page, search, pageSize),
           showSizeChanger: false,
         }}
       />

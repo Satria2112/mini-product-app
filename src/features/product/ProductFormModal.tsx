@@ -1,4 +1,5 @@
 import { Modal, Form, Input, InputNumber } from "antd";
+import { useEffect } from "react";
 
 export default function ProductFormModal({
   open,
@@ -8,6 +9,17 @@ export default function ProductFormModal({
 }: any) {
   const [form] = Form.useForm();
 
+  // 🔥 FIX: reset & set form setiap open
+  useEffect(() => {
+    if (open) {
+      if (initialValues) {
+        form.setFieldsValue(initialValues); // edit
+      } else {
+        form.resetFields(); // add
+      }
+    }
+  }, [open, initialValues]);
+
   return (
     <Modal
       open={open}
@@ -15,13 +27,9 @@ export default function ProductFormModal({
       onCancel={onClose}
       onOk={() => form.submit()}
       destroyOnClose
+      centered // 🔥 modal di tengah
     >
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={onSubmit}
-        initialValues={initialValues}
-      >
+      <Form form={form} layout="vertical" onFinish={onSubmit}>
         <Form.Item name="title" label="Title" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
